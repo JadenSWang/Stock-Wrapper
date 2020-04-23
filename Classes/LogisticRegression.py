@@ -110,6 +110,10 @@ class LogisticRegression:
 
     # TESTING THE DATA SET
     def test(self, testFeatures, testLabels):
+        testFeatures = tf.Variable(testFeatures)
+        testLabels = tf.Variable(testLabels)
+
+        testFeatures = self.standardize(testFeatures)
         predictions = self.predict(testFeatures);
         testLabels = tf.math.argmax(testLabels, 1)
 
@@ -123,4 +127,5 @@ class LogisticRegression:
         to_return = self.process_features(features)
         to_return = tf.linalg.matmul(to_return, self.weights)
         to_return = tf.nn.softmax(to_return)
+
         return tf.math.argmax(to_return, 1)

@@ -79,7 +79,7 @@ class Stocks:
         ax1 = fig.add_subplot(1,1,1)
 
         def animate(i):
-            graph_data = open('stock.txt', 'r').read()
+            graph_data = open('../stock.txt', 'r').read()
             lines = graph_data.split('\n')
 
             xs = []
