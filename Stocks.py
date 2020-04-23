@@ -34,8 +34,6 @@ class Stocks:
     def get_history_today(self, stock):
         return r.stocks.get_historicals(stock, span='day')
 
-
-
     def realtime_data(self, stocks):
         class Stocks_Data_Thread (threading.Thread):
             def __init__(self, stocks):
@@ -106,3 +104,26 @@ class Stocks:
             data.append([begins_at, open_price, close_price, high_price, low_price, volume, session, interpolated])
 
         return data
+
+    def get_training_data(self, stock, span='day', type='close_price'):
+        data = r.stocks.get_historicals(stock, span)
+        features = []
+        labels = []
+
+        i = 1
+        while i < len(data):
+            prev_time_frame = data[i - 1]
+            time_frame = data[i]
+
+            # features
+            _, open_price, close_price, high_price, low_price, volume, _, _, _ = time_frame.values()
+            data_frame = [float(open_price), float(close_price), float(high_price), float(low_price), float(volume)]
+            features.append(data_frame)
+
+            # labels
+            label = (float(time_frame[type]) - float(prev_time_frame['close_price'])) / float(time_frame['close_price']) * 100
+            labels.append([label])
+
+            i += 1
+
+        return features, labels
