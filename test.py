@@ -7,7 +7,7 @@ data = JSONReader.read_file('Classes/weights.json')
 weights = data['weights']
 
 credentials = JSONReader.read_file("Credentials.json")
-stocks = Stocks("autumn2k@gmail.com", "Mary0707$2")
+stocks = Stocks(credentials['email'], credentials['password'])
 
 data = stocks.get_data(['UAL'], 'day')
 features, labels = stocks.get_training_data(['UAL'], '3month')

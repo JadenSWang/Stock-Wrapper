@@ -2,7 +2,8 @@ from Classes.LogisticRegression import LogisticRegression
 from Classes.JSONReader import JSONReader
 from Classes.Stocks import Stocks
 
-stocks = Stocks("autumn2k@gmail.com", "Mary0707$2")
+credentials = JSONReader.read_file('Credentials.json')
+stocks = Stocks(credentials['email'], credentials['password'])
 
 data = stocks.get_data(['UAL'], 'day')
 features, labels = stocks.get_training_data(['UAL'], '3month')
