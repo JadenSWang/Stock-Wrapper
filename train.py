@@ -20,4 +20,4 @@ data = {}
 data["accuracy"] = accuracy
 data["weights"] = regression.weights.numpy().tolist()
 
-JSONReader.write_file('stock.txt', data)
+JSONReader.write_file('stockdata.txt', data)
