@@ -1,17 +1,26 @@
 import robin_stocks as r
 
+import mplcursors
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.dates as md
 import seaborn as sns
 
 import threading
 import curses
 import time
-
+import datetime
+from datetime import timedelta
 
 class StockTracker:
     def __init__(self, username, password):
         r.login(username, password)
+
+        # graph formatting
+        mpl.rcParams['toolbar'] = 'None'
+        sns.despine()
+        sns.set_style("darkgrid", {"axis.facecolor": ".9"})
 
     def print(self):
         stocks = r.build_holdings().items()
@@ -23,11 +32,38 @@ class StockTracker:
             print("\t", "Equity           ", value["equity"])
             print()
 
-    def graph(self):
-        stock = 'UAL'
+    def graph(self, span='day'):
+        plt.close()
 
-        data = {"time": [0], "price": [100]}
-        sns.lineplot('time', 'price', data=data, linestyle='-', marker='o')
+        def __graph(stock):
+            time_axis = []
+            price_high = []
+            price_low = []
+
+            stock = r.stocks.get_historicals([stock], span=span)
+            for time_frame in stock:
+                t = self.__get_time(time_frame['begins_at'])
+                time_axis.append(t)
+                price_high.append(float(time_frame['high_price']))
+                price_low.append(float(time_frame['low_price']))
+
+            print(time_axis)
+            data = {"time": time_axis, "price": price_high}
+            ax = sns.lineplot('time', 'price', data=data)
+            data = {"time": time_axis, "price": price_low}
+            sns.lineplot('time', 'price', data=data)
+
+            #final config
+            ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
+
+            mplcursors.cursor(hover=True)
+            # plt.xlim([datetime.datetime.combine(datetime.datetime.now().date(), datetime.time(8, 30)), datetime.datetime.combine(datetime.datetime.now().date(), datetime.time(18, 0))])
+
+        for key, value in r.build_holdings().items():
+            plt.figure()
+            plt.title(key)
+            __graph(key)
+
         plt.show()
 
     def live_print(self, stocks_to_monitor=[], duration=100):
@@ -73,39 +109,30 @@ class StockTracker:
         Stocks_Data_Thread(holdings.keys(), stocks_to_monitor, duration).start()
 
     def live_graph(self, stocks_to_monitor = [], duration = 100):
-        def graph(fig, stock, animations=[]):
-            ax1 = fig.add_subplot(1,1,1)
-
+        def __graph(fig, stock, animations=[]):
             def animate(i):
-                x_axis = []
-                y_axis = []
+                time = []
+                price_high = []
+                price_low = []
 
-                historical = r.stocks.get_historicals(stock)
-                for time in historical:
-                    date = time['begins_at']
-                    price = time['open_price']
+                history = r.stocks.get_historicals([stock], span='day')
+                for time_frame in history:
+                    t = self.__get_time(time_frame['begins_at'])
+                    time.append(t)
+                    price_high.append(float(time_frame['high_price']))
+                    price_low.append(float(time_frame['low_price']))
 
-                    x_axis.append(date)
-                    y_axis.append(price)
-
-                ax1.clear()
-                ax1.plot(x_axis, y_axis)
-
+                data = {"time": time, "price": price_high}
+                ax = sns.lineplot('time', 'price', data=data)
+                ax.clear()
             animations.append(animation.FuncAnimation(fig, animate, interval=10000))
             plt.show()
 
-
-        animations = []
         holdings = r.account.build_holdings()
-        graph(plt.figure(), 'UAL', animations)
-        graph(plt.figure(), 'TSLA', animations)
-        # for stock in holdings.keys():
-        #     graph(stock)
-            # threading.Thread(target=graph, args=(stock,)).start()
-
-        # for stock in stocks_to_monitor:
-        #     if stock not in holdings.keys():
-        #         threading.Thread(target=graph, args=(stock,)).start()
+        for key, value in r.build_holdings().items():
+            plt.figure()
+            plt.title(key)
+            __graph(key)
 
     def __live_graph(self, stocks_to_monitor = [], duration = 100):
         class Load_Stock_To_File(threading.Thread):
@@ -156,3 +183,6 @@ class StockTracker:
 
         ani = animation.FuncAnimation(fig, animate, interval=1000)
         plt.show()
+
+    def __get_time(self, time, conversion=-5):
+        return datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ") + timedelta(hours=conversion)
