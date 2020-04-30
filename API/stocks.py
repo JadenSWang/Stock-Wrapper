@@ -9,9 +9,9 @@ import seaborn as sns
 
 import datetime
 
-
 class stock_tracker:
-    def __init__(self, username, password):
+    @staticmethod
+    def login(username, password):
         """This is your login information, you have to log in before you can perform any sort of operation.
         This device will be validated for 86400 seconds
 
@@ -20,7 +20,7 @@ class stock_tracker:
         :param password: The password for your robinhood account. Not required if credentials are already cached and valid.
         :type username: str
         """
-
+        #init
         robin_stocks.login(username, password)
 
         #graph init
@@ -28,10 +28,11 @@ class stock_tracker:
         sns.despine()
         sns.set_style("darkgrid", {"axis.facecolor": ".9"})
 
-    def print_holdings(self):
+    @staticmethod
+    def print_holdings():
         """Fetches a list of owned stocks and displays them in the following format
 
-        Name (ID)
+        Name (Ticker Symbol)
             Quantity\n
             Current Price\n
             Average Buy Price\n
@@ -48,10 +49,10 @@ class stock_tracker:
             print("\t", "Equity           ", value["equity"])
             print()
 
-    def get_historical_prices(self, stock, span='day'):
-        """Takes a single stock id to build a list of tuples representing a time_frame and its respective price
-
-        :param stock: single Stock ID
+    @staticmethod
+    def get_historical_prices(ticker_symbol, span='day'):
+        """Takes a single Ticker Symbol to build a list of tuples representing a time_frame and its respective price
+        :param stock: single Ticker Symbol
         :type: str
         :param span: width of the history of the selected stock
         :type: str
@@ -61,9 +62,9 @@ class stock_tracker:
         """
 
         historicals = []
-        history = robin_stocks.get_historicals(stock, span=span)
+        history = robin_stocks.get_historicals(ticker_symbol, span=span)
         for time_frame in history:
-            time = self.__get_time(time_frame['begins_at'])
+            time = stock_tracker.__get_time(time_frame['begins_at'])
             price = time_frame['open_price']
             historicals.append((time, float(price)))
 
@@ -73,13 +74,14 @@ class stock_tracker:
     def __get_time(time, conversion=-5):
         return datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ") + datetime.timedelta(hours=conversion)
 
-    def graph(self, stock, span='day'):
-        """Takes in a single stock id and displays a matplot graph
-        :param stock:
-        :param span:
-        :return:
+    @staticmethod
+    def graph(ticker_symbol, span='day'):
+        """Takes in a single Ticker Symbol and optional span. Displays a matplot graph with the history of that stock, default span to one day
+        :param stock: single Ticker Symbol
+        :type stock: str
+        :param span: how far back the graph should span for
+        :type span: str, ['day', 'week', 'month', '3month', 'year']
         """
-
 
         def __graph(data):
             times, prices = zip(*data)
@@ -90,9 +92,16 @@ class stock_tracker:
             ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
             mplcursors.cursor(hover=True)
 
-        data = self.get_historical_prices(stock, span=span)
+        data = stock_tracker.get_historical_prices(ticker_symbol, span=span)
         __graph(data)
         plt.show()
 
-    def live_graph(self, stock):
+    @staticmethod
+    def live_graph(ticker_symbol, span='day'):
+        """Takes in a single Ticker Symbol and optional span. Displays a matplot graph with the history of that stock and updates it live. Ideal for displays, default span to one day
+        :param stock: single Ticker Symbol
+        :type stock: str
+        :param span: how far back the graph should span for
+        :type span: str, ['day', 'week', 'month', '3month', 'year']
+        """
         return

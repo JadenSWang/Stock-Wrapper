@@ -1,5 +1,6 @@
 import json
 
+
 class JSONReader:
     @staticmethod
     def read_file(filename):
