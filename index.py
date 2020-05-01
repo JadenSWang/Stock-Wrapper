@@ -1,8 +1,6 @@
 from Classes.JSONReader import JSONReader
-from API.stocks import stock_tracker
-from API.stockdata import stock_data
+from StockTracker.stocks import stock_tracker
 
 credentials = JSONReader.read_file("Credentials.json")
-
-stock_tracker.login(credentials['email'], credentials['password'])
-stock_tracker.display_holdings(duration=-1)
+stock_tracker.robin.login(credentials['email'], credentials['password'])
+print(stock_tracker.robin.build_portfolio())

@@ -11,6 +11,8 @@ import threading
 import curses
 import time
 
+import yfinance as yf
+
 
 class stock_tracker:
     @staticmethod
@@ -53,18 +55,21 @@ class stock_tracker:
             print()
 
     @staticmethod
-    def display_holdings(stocks_to_monitor=[], duration=100):
+    def display_holdings(stocks_to_monitor=[], duration=100, show_quantity=False, show_equity=False):
         """Turns the command shell executing into a ticker display
         :param stocks_to_monitor: any extra stocks you want to
         :param duration: duration in seconds, -1 for infinite
         :type duration: int
         """
         class Stocks_Data_Thread (threading.Thread):
-            def __init__(self, stocks, stocks_to_monitor=[], duration=100):
+            def __init__(self, stocks, show_quantity, show_equity, stocks_to_monitor=[], duration=100):
                 threading.Thread.__init__(self)
                 self.stocks = stocks
                 self.stocks_to_monitor = stocks_to_monitor
                 self.duration = duration
+
+                self.show_quantity = show_quantity
+                self.show_equity = show_equity
 
             def run(self):
                 stdscr = curses.initscr()
@@ -72,11 +77,20 @@ class stock_tracker:
                 curses.cbreak()
 
                 try:
+                    holdings = robin_stocks.build_holdings()
+
                     i = 0
                     while duration == -1 or i < duration * 20:
                         y = 0
                         for stock in self.stocks:
-                            stdscr.addstr(y, 0, stock + "\t" + str(self.__get_stock_price(stock)))
+                            to_print = stock + "\t" + str(self.__get_stock_price(stock))
+
+                            if self.show_quantity:
+                                to_print += "\t" + str(int(float(holdings[stock]['quantity'])))
+
+                            if self.show_equity:
+                                to_print += "\t" + str(float(holdings[stock]['equity']))
+                            stdscr.addstr(y, 0, to_print)
                             y += 1
 
                         if 0 < len(self.stocks_to_monitor):
@@ -99,7 +113,7 @@ class stock_tracker:
                 return float(int(float(robin_stocks.stocks.get_latest_price(stock)[0]) * rounding) / rounding)
 
         holdings = robin_stocks.account.build_holdings()
-        Stocks_Data_Thread(holdings.keys(), stocks_to_monitor, duration).start()
+        Stocks_Data_Thread(holdings.keys(), show_quantity, show_equity, stocks_to_monitor, duration).start()
 
     @staticmethod
     def get_historical_prices(ticker_symbol, span='day'):
@@ -160,5 +174,6 @@ class stock_tracker:
         return
 
     class data:
-        def get_data(self):
-            return
+        @staticmethod
+        def get_data(ticker_symbol):
+            return yf.Ticker(ticker_symbol).info
