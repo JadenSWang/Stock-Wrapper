@@ -1,12 +1,7 @@
 import robin_stocks
 
-import curses
-import threading
-import time
-import datetime
 
-
-class base_robin:
+class robin:
     logged_in = False
 
     @classmethod

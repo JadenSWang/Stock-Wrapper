@@ -1,7 +1,7 @@
 import matplotlib
 
 
-class base_visualize:
+class visualize:
     @classmethod
     def display_stocks(cls):
         pass

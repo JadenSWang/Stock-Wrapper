@@ -2,7 +2,7 @@ import yfinance
 import robin_stocks
 
 
-class base_stock:
+class Stock():
     def __init__(self, ticker):
         self.ticker = ticker
 
