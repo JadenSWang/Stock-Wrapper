@@ -55,9 +55,10 @@ class stock_tracker:
             print()
 
     @staticmethod
-    def display_holdings(stocks_to_monitor=[], duration=100, show_quantity=False, show_equity=False):
+    def display_holdings(extra_stocks_to_monitor=[], duration=100, show_quantity=False, show_equity=False):
         """Turns the command shell executing into a ticker display
-        :param stocks_to_monitor: any extra stocks you want to
+        :param extra_stocks_to_monitor: any extra stocks you want to
+        :type extra_stocks_to_monitor: list [str]
         :param duration: duration in seconds, -1 for infinite
         :type duration: int
         """
@@ -113,7 +114,7 @@ class stock_tracker:
                 return float(int(float(robin_stocks.stocks.get_latest_price(stock)[0]) * rounding) / rounding)
 
         holdings = robin_stocks.account.build_holdings()
-        Stocks_Data_Thread(holdings.keys(), show_quantity, show_equity, stocks_to_monitor, duration).start()
+        Stocks_Data_Thread(holdings.keys(), show_quantity, show_equity, extra_stocks_to_monitor, duration).start()
 
     @staticmethod
     def get_historical_prices(ticker_symbol, span='day'):

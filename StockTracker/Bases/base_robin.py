@@ -34,6 +34,27 @@ class base_robin:
         return robin_stocks.build_holdings()
 
     @classmethod
+    def print_portfolio(cls):
+        """Fetches a list of owned stocks and displays them in the following format
+
+        Name (Ticker Symbol)
+            Quantity\n
+            Current Price\n
+            Average Buy Price\n
+            Equity
+        """
+
+        holdings = cls.build_portfolio().items()
+
+        for key, value in holdings:
+            print(value["name"], "(" + key + ")")
+            print("\t", "Quantity         ", value["quantity"])
+            print("\t", "Current Price    ", value["price"])
+            print("\t", "Average Buy Price", value["price"])
+            print("\t", "Equity           ", value["equity"])
+            print()
+
+    @classmethod
     def limit_buy_stock(cls):
         pass
 
