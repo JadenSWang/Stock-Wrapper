@@ -53,11 +53,3 @@ class base_robin:
             print("\t", "Average Buy Price", value["price"])
             print("\t", "Equity           ", value["equity"])
             print()
-
-    @classmethod
-    def limit_buy_stock(cls):
-        pass
-
-    @classmethod
-    def limit_sell_stock(cls):
-        pass
