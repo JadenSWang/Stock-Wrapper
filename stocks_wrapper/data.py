@@ -1,4 +1,6 @@
+import yfinance
 
-class base_stock_tracker:
+
+class data:
     def __init__(self):
         return
