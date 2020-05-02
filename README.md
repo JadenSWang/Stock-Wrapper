@@ -1,10 +1,10 @@
-##StockTracker
+## StockTracker
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 
-###Introduction
+### Introduction
 Stock market api, utilizing both static and class system architecture
 
-####What packages is used?
+#### What packages is used?
 
 - direct portfolio manipulation
     - robin_stocks (robinhood: requires account)
