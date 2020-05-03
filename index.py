@@ -1,12 +1,7 @@
 from Classes.JSONReader import JSONReader
-from stock_wrapper import Shares, robin
+import stock_wrapper
 
 credentials = JSONReader.read_file("Credentials.json")
-robin.login(credentials['email'], credentials['password'])
+stock_wrapper.robin.login(credentials['email'], credentials['password'])
 
-# data = robin.build_portfolio()
-# print(data)
-# print(ual.quantity)
-
-data = Shares("UAL").equity
-print(data)
+stock_wrapper.visualize.display_stocks()
