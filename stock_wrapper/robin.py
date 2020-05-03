@@ -1,9 +1,8 @@
+import stock_wrapper
 import robin_stocks
 
 
 class robin:
-    logged_in = False
-
     @classmethod
     def login(cls, username, password):
         """This is your login information, you have to log in before you can perform any sort of operation.
@@ -16,17 +15,17 @@ class robin:
         """
         # init
         robin_stocks.login(username, password)
-        cls.logged_in = True
-
-    @classmethod
-    def check_login(cls):
-        if not cls.logged_in:
-            raise ValueError("Did you forget to login?")
 
     @classmethod
     def build_portfolio(cls):
-        cls.check_login()
-        return robin_stocks.build_holdings()
+        """
+        :return:
+        """
+        shares = []
+        for ticker in robin_stocks.build_holdings().keys():
+            shares.append(stock_wrapper.Shares(ticker))
+
+        return shares
 
     @classmethod
     def print_portfolio(cls):
@@ -38,7 +37,6 @@ class robin:
             Average Buy Price\n
             Equity
         """
-
         holdings = cls.build_portfolio().items()
 
         for key, value in holdings:

@@ -8,9 +8,11 @@ class Stock():
 
         self.fundamentals = robin_stocks.get_fundamentals(self.ticker)[0]
 
-    @classmethod
-    def reload_cache(cls):
-        cls.fundamentals = robin_stocks.get_fundamentals(cls.ticker)[0]
+    def __str__(self):
+        return self.ticker
+
+    def reload_cache(self):
+        self.fundamentals = robin_stocks.get_fundamentals(self.ticker)[0]
 
     @property
     def price(self):
