@@ -1,5 +1,11 @@
-import matplotlib
+import stock_wrapper
+
 import robin_stocks
+import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import matplotlib.dates as md
+import seaborn as sns
 
 import threading
 import curses
@@ -19,9 +25,8 @@ class visualize:
             return
 
         class Stocks_Data_Thread(threading.Thread):
-            def __init__(self, stocks, stocks_to_monitor=[], duration=100):
+            def __init__(self, stocks_to_monitor, duration=100):
                 threading.Thread.__init__(self)
-                self.stocks = stocks
                 self.stocks_to_monitor = stocks_to_monitor
                 self.duration = duration
 
@@ -34,16 +39,10 @@ class visualize:
                     i = 0
                     while duration == -1 or i < duration * 20:
                         y = 0
-                        for stock in self.stocks:
+                        for stock in self.stocks_to_monitor:
                             to_print = stock + "\t" + str(self.__get_stock_price(stock))
                             stdscr.addstr(y, 0, to_print)
                             y += 1
-
-                        if 0 < len(self.stocks_to_monitor):
-                            y += 1
-                            for stock in self.stocks_to_monitor:
-                                if stock not in self.stocks:
-                                    stdscr.addstr(y, 0, stock + "\t" + str(self.__get_stock_price(stock)))
 
                         stdscr.refresh()
                         time.sleep(0.05)
@@ -124,3 +123,27 @@ class visualize:
             return
 
         Stocks_Data_Thread(holdings.keys(), show_quantity, show_equity, extra_stocks_to_monitor, duration).start()
+
+    @staticmethod
+    def graph(ticker_symbol, span='day'):
+        """Takes in a single Ticker Symbol and optional span. Displays a matplot graph with the history of that stock, default span to one day
+        :param stock: single Ticker Symbol
+        :type stock: str
+        :param span: how far back the graph should span for
+        :type span: str, ['day', 'week', 'month', '3month', 'year']
+        """
+
+        def __graph(data):
+            times, prices = zip(*data)
+            print(times)
+            print(prices)
+
+            ax = sns.regplot('time', 'price', data={"time": times, "price": prices})
+
+            #final config
+            if span == "day":
+                ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
+
+        data = stock_wrapper.data.get_historical_prices(ticker_symbol, span=span)
+        __graph(data)
+        plt.show()
