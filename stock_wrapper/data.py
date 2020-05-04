@@ -33,20 +33,8 @@ class data:
         :return: [list]: (timeframe <datetime.datetime>, price <int>)
         """
 
-        historicals = []
         history = yfinance.Ticker(ticker_symbol).history(period=cls.__switcher[span])
-        for row in history.head().itertuples():
-            object = {}
-            object['date'] = row.Index
-            object['open'] = row.Open
-            object['close'] = row.Close
-            object['high'] = row.High
-            object['low'] = row.Low
-            object['volume'] = row.Volume
-
-            historicals.append(object)
-
-        return historicals
+        return history
 
     @classmethod
     def get_historical_prices(cls, ticker_symbol, span='day'):
@@ -60,14 +48,13 @@ class data:
         :return: [list]: (timeframe <datetime.datetime>, price <int>)
         """
 
-        historicals = []
         history = robin_stocks.get_historicals(ticker_symbol, span=span)
         for time_frame in history:
-            time = cls.__get_time(time_frame['begins_at'])
-            price = (float(time_frame['open_price']) + float(time_frame['close_price'])) / 2
-            historicals.append((time, float(price)))
+            time_frame['begins_at'] = cls.__get_time(time_frame['begins_at'])
 
-        return historicals
+        historicals_df = pd.DataFrame(history).astype({'open_price': 'float32', 'close_price': 'float32'})
+        historicals_df['average_price'] = historicals_df.apply(lambda row: row.open_price + row.close_price, axis=1)
+        return historicals_df
 
     @staticmethod
     def __get_time(time, conversion=-5):

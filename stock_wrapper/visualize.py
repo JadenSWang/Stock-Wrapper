@@ -1,6 +1,7 @@
 import stock_wrapper
 
 import robin_stocks
+import pandas
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -134,11 +135,8 @@ class visualize:
         """
 
         def __graph(data):
-            times, prices = zip(*data)
-            print(times)
-            print(prices)
-
-            ax = sns.regplot('time', 'price', data={"time": times, "price": prices})
+            sns.set(style="darkgrid")
+            ax = sns.lineplot('begins_at', 'average_price', data=data)
 
             #final config
             if span == "day":
