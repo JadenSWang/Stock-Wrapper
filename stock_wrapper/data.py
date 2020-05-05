@@ -53,7 +53,7 @@ class data:
             time_frame['begins_at'] = cls.__get_time(time_frame['begins_at'])
 
         historicals_df = pd.DataFrame(history).astype({'open_price': 'float32', 'close_price': 'float32'})
-        historicals_df['average_price'] = historicals_df.apply(lambda row: row.open_price + row.close_price, axis=1)
+        historicals_df['average_price'] = historicals_df.apply(lambda row: (row.open_price + row.close_price) / 2, axis=1)
         return historicals_df
 
     @staticmethod

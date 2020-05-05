@@ -9,6 +9,7 @@ import matplotlib.dates as md
 import seaborn as sns
 
 import threading
+import multiprocessing
 import curses
 import time
 
@@ -126,13 +127,16 @@ class visualize:
         Stocks_Data_Thread(holdings.keys(), show_quantity, show_equity, extra_stocks_to_monitor, duration).start()
 
     @staticmethod
-    def graph(ticker_symbol, span='day'):
+    def graph(stock, span='day'):
         """Takes in a single Ticker Symbol and optional span. Displays a matplot graph with the history of that stock, default span to one day
-        :param stock: single Ticker Symbol
-        :type stock: str
+        :param stock: single Stock object
+        :type stock: <stock_wrapper.Stock>
         :param span: how far back the graph should span for
         :type span: str, ['day', 'week', 'month', '3month', 'year']
         """
+
+        if(isinstance(stock, stock_wrapper.Stock)):
+            raise Exception("Graph takes in a Stock object")
 
         def __graph(data):
             sns.set(style="darkgrid")
@@ -142,6 +146,35 @@ class visualize:
             if span == "day":
                 ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
 
-        data = stock_wrapper.data.get_historical_prices(ticker_symbol, span=span)
+        data = stock.get_historical_prices()
         __graph(data)
+        plt.show()
+
+    @staticmethod
+    def graph_stocks(stock_objects, span='day'):
+        """Takes in a list of and optional span. Displays a matplot graph with the history of that stock, default span to one day
+        :param stock: list of Stock objects
+        :type stock: list <stock_wrapper.Stock>
+        :param span: how far back the graph should span for
+        :type span: str, ['day', 'week', 'month', '3month', 'year']
+        """
+
+        f, axes = plt.subplots(int(len(stock_objects) / 3), 3, figsize=(13, 10))
+        sns.despine(left=True)
+
+        def __graph(data, row, col, axes):
+            sns.set(style="darkgrid")
+            ax = sns.lineplot('begins_at', 'average_price', data=data, ax=axes[row, col])
+
+            #final config
+            if span == "day":
+                ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
+
+        i = 0
+        for row in range(int(len(stock_objects) / 3)):
+            for col in range(3):
+                axes[row][col].set_title(stock_objects[i].ticker)
+                __graph(stock_objects[i].get_historical_prices(span=span), row, col, axes)
+                i += 1
+
         plt.show()

@@ -1,5 +1,6 @@
 import yfinance
 import robin_stocks
+import stock_wrapper
 
 
 class Stock():
@@ -13,6 +14,9 @@ class Stock():
 
     def reload_cache(self):
         self.fundamentals = robin_stocks.get_fundamentals(self.ticker)[0]
+
+    def get_historical_prices(self, span='day'):
+        return stock_wrapper.data.get_historical_prices(self.ticker, span=span)
 
     @property
     def price(self):
