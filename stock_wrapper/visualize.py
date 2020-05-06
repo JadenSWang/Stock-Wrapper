@@ -156,32 +156,41 @@ class visualize:
         plt.show()
 
     @staticmethod
-    def graph_analysis(stock):
-        """Takes in a single Ticker Symbol and optional span. Displays a matplot graph with the history of that stock, default span to one day
-        :param stock: single Stock object
-        :type stock: <stock_wrapper.Stock>
+    def graph_analysis(stocks):
+        """Takes in a list of Ticker Symbols and optional span. Displays a matplot graph with the history of that stock, default span to one day
+        :param stock: list of Stock objects
+        :type stock: list [<stock_wrapper.Stock>]
         :param span: how far back the graph should span for
         :type span: str, ['day', 'week', 'month', '3month', 'year']
         """
 
-        def __graph(stock):
-            data = stock.history
-
+        def __graph(stock, data):
             sns.set(style="darkgrid")
+
+            plt.figure()
             ax = sns.lineplot(x="Date", y="Average", color='#82b2ff', data=data)
             sns.lineplot(x="Date", y="50_SMA", color='#0d5ad6', data=data)
+            sns.lineplot(x="Date", y="100_SMA", color='#e6df17', data=data)
             sns.lineplot(x="Date", y="200_SMA", color='#ffa500', data=data)
 
             average_patch = mpatches.Patch(color='#82b2ff', label='Average Price')
             sma_50_patch = mpatches.Patch(color='#0d5ad6', label='50 Day Moving Average')
+            sma_100_patch = mpatches.Patch(color='#e6df17', label='100 Day Moving Average')
             sma_200_patch = mpatches.Patch(color='#ffa500', label='200 Day Moving Average')
-            plt.legend(handles=[average_patch, sma_50_patch, sma_200_patch])
+            plt.legend(handles=[average_patch, sma_50_patch, sma_100_patch, sma_200_patch])
 
             ax.set_title(stock.ticker)
+            plt.gcf().canvas.set_window_title(stock.ticker)
             plt.xlabel("Date")
             plt.ylabel("Price ($)")
 
-        __graph(stock)
+        data = []
+        for stock in stocks:
+            data.append(stock.history)
+
+        for i in range(len(data)):
+            __graph(stocks[i], data[i])
+
         plt.show()
 
     @staticmethod

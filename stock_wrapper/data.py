@@ -44,7 +44,7 @@ class data:
                     index += 1
 
         __build_average(history, 50)
-        # __build_average(history, 100)
+        __build_average(history, 100)
         __build_average(history, 200)
 
         return history
