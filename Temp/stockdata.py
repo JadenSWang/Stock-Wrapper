@@ -8,6 +8,7 @@ import seaborn as sns
 
 import datetime
 import threading
+import multiprocessing
 import curses
 import time
 
@@ -162,7 +163,6 @@ class stock_tracker:
 
         data = stock_tracker.get_historical_prices(ticker_symbol, span=span)
         __graph(data)
-        plt.show()
 
     @staticmethod
     def live_graph(ticker_symbol, span='day'):
