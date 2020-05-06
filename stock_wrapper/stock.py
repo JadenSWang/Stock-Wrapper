@@ -19,6 +19,10 @@ class Stock():
         return stock_wrapper.data.get_historical_prices(self.ticker, span=span)
 
     @property
+    def history(self):
+        return stock_wrapper.data.get_history(self.ticker)
+
+    @property
     def price(self):
         return float(robin_stocks.stocks.get_latest_price(self.ticker)[0])
 

@@ -4,14 +4,17 @@ import robin_stocks
 import pandas
 import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import matplotlib.animation as animation
 import matplotlib.dates as md
 import seaborn as sns
 
 import threading
-import multiprocessing
+import multiprocessing as mp
 import curses
 import time
+import datetime
+import numpy as np
 
 
 class visualize:
@@ -135,10 +138,9 @@ class visualize:
         :type span: str, ['day', 'week', 'month', '3month', 'year']
         """
 
-        if(isinstance(stock, stock_wrapper.Stock)):
-            raise Exception("Graph takes in a Stock object")
+        def __graph(stock):
+            data = stock.get_historical_prices()
 
-        def __graph(data):
             sns.set(style="darkgrid")
             ax = sns.lineplot('begins_at', 'average_price', data=data)
 
@@ -146,8 +148,40 @@ class visualize:
             if span == "day":
                 ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
 
-        data = stock.get_historical_prices()
-        __graph(data)
+            ax.set_title(stock.ticker + ": " + span)
+            plt.xlabel("Date")
+            plt.ylabel("Price ($)")
+
+        __graph(stock)
+        plt.show()
+
+    @staticmethod
+    def graph_analysis(stock):
+        """Takes in a single Ticker Symbol and optional span. Displays a matplot graph with the history of that stock, default span to one day
+        :param stock: single Stock object
+        :type stock: <stock_wrapper.Stock>
+        :param span: how far back the graph should span for
+        :type span: str, ['day', 'week', 'month', '3month', 'year']
+        """
+
+        def __graph(stock):
+            data = stock.history
+
+            sns.set(style="darkgrid")
+            ax = sns.lineplot(x="Date", y="Average", color='#82b2ff', data=data)
+            sns.lineplot(x="Date", y="50_SMA", color='#0d5ad6', data=data)
+            sns.lineplot(x="Date", y="200_SMA", color='#ffa500', data=data)
+
+            average_patch = mpatches.Patch(color='#82b2ff', label='Average Price')
+            sma_50_patch = mpatches.Patch(color='#0d5ad6', label='50 Day Moving Average')
+            sma_200_patch = mpatches.Patch(color='#ffa500', label='200 Day Moving Average')
+            plt.legend(handles=[average_patch, sma_50_patch, sma_200_patch])
+
+            ax.set_title(stock.ticker)
+            plt.xlabel("Date")
+            plt.ylabel("Price ($)")
+
+        __graph(stock)
         plt.show()
 
     @staticmethod
@@ -159,22 +193,29 @@ class visualize:
         :type span: str, ['day', 'week', 'month', '3month', 'year']
         """
 
-        f, axes = plt.subplots(int(len(stock_objects) / 3), 3, figsize=(13, 10))
-        sns.despine(left=True)
+        f, axes = plt.subplots(int(np.ceil(len(stock_objects) / 3)), 3, figsize=(8, 6))
 
         def __graph(data, row, col, axes):
-            sns.set(style="darkgrid")
-            ax = sns.lineplot('begins_at', 'average_price', data=data, ax=axes[row, col])
+            chart = sns.lineplot('begins_at', 'average_price', data=data, ax=axes[row, col])
+            chart.set_xlabel("Date")
+            plt.setp(chart.get_xticklabels(), rotation=45)
+            # chart.set_xticklabels(chart.get_xticklabels(), rotation=5, horizontalalignment='right')
+            chart.set_ylabel("Price ($)")
 
             #final config
             if span == "day":
-                ax.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
+                chart.xaxis.set_major_formatter(md.DateFormatter('%H:%M:%S'))
 
         i = 0
-        for row in range(int(len(stock_objects) / 3)):
+        for row in range(int(np.ceil(len(stock_objects) / 3))):
             for col in range(3):
-                axes[row][col].set_title(stock_objects[i].ticker)
-                __graph(stock_objects[i].get_historical_prices(span=span), row, col, axes)
+                if i < len(stock_objects):
+                    axes[row][col].set_title(stock_objects[i].ticker)
+                    __graph(stock_objects[i].get_historical_prices(span=span), row, col, axes)
                 i += 1
+
+        # chart config
+        sns.despine(left=True)
+        sns.set(style="dark")
 
         plt.show()
