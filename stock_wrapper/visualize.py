@@ -1,11 +1,8 @@
 import stock_wrapper
 
 import robin_stocks
-import pandas
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-import matplotlib.animation as animation
 import matplotlib.dates as md
 import seaborn as sns
 import plotly.graph_objects as go
