@@ -7,7 +7,6 @@ import numpy as np
 
 import datetime
 
-
 class data:
     __switcher = {
         'day': '1d',
@@ -22,7 +21,7 @@ class data:
         pass
 
     @classmethod
-    def get_history(cls, ticker_symbol):
+    def get_history(cls, ticker_symbol, calculate_averages=False):
         """Takes in a ticker object and returns a pandas dataframe containing price,
         :param stock: single Ticker Symbol
         :type: str
@@ -43,9 +42,10 @@ class data:
                     history.iloc[index, history.columns.get_loc(name)] = history.iloc[index - period:index]['Close'].sum() / period
                     index += 1
 
-        __build_average(history, 50)
-        __build_average(history, 100)
-        __build_average(history, 200)
+        if calculate_averages:
+            __build_average(history, 50)
+            __build_average(history, 100)
+            __build_average(history, 200)
 
         return history
 
