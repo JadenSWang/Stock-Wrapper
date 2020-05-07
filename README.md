@@ -8,10 +8,15 @@ provide a streamlined stock market analysis experience.
 No API key is needed, all data is 100% free and accessible from yahoo finance and robin_hood's 
 free API. 
 
+### Installation
+Setup is simple, simply type 
+> pip install stock_wrapper
 
-### What packages is used?
+If you wish to use the source code simply download this repository, its free forever, I promise
 
-- direct portfolio manipulationf
+### What packages are used?
+
+- direct portfolio manipulation
     - robin_stocks (robinhood: requires account)
 - stock market data gathering
     - robin_stocks (robinhood)

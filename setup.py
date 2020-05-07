@@ -15,7 +15,6 @@ setup(
           'robin_stocks',
           'matplotlib',
           'seaborn',
-          'curses',
           'plotly',
           'pandas',
           'numpy',
