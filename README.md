@@ -23,10 +23,10 @@ Complete example is under Examples/example.py
 
 Most of the data manipulation is based off the <stock_wrapper.Stock> object. 
 
-##### Using Stock_Wrapper with a RobinHood account
+#### Using Stock_Wrapper with a RobinHood account
 If you are a robinhood trader, you can login to your robinhood account and 
 buy/sell stocks by  simply creating a stock object like so.
 
 We will be using the S&P 500 Index as an example
->>> Stock('Ticker Name')
+> Stock('Ticker Name')
 
