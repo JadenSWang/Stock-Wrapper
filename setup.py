@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'stock_wrapper',
   packages = ['stock_wrapper'],   # Chose the same as "name"
-  version = '0.1',
+  version = '0.1.1',
   license='MIT',
   description = 'A wrapper to handle all of your stock data and trading needs',
   author = 'Jaden Shiteng Wang',
