@@ -9,10 +9,8 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import threading
-import multiprocessing as mp
 import curses
 import time
-import datetime
 import numpy as np
 
 
@@ -155,7 +153,7 @@ class visualize:
         plt.show()
 
     @staticmethod
-    def graph_candlestick_analysis(stocks):
+    def graph_candlestick_analysis(stocks, cache=True):
         """Takes in a list of Ticker Symbols and optional span. Displays a matplot graph with the history of that stock, default span to one day
         :param stock: list of Stock objects
         :type stock: list [<stock_wrapper.Stock>]
@@ -167,7 +165,7 @@ class visualize:
             sns.set(style="darkgrid")
 
             fig = make_subplots(specs=[[{"secondary_y": True}]])
-            fig.add_trace(go.Candlestick(x=data['Date'], open=data['Open'], high=data['High'], low=data['Low'], close=data['Close'], name='Market Price'))
+            fig.add_trace(go.Candlestick(x=data['Date'], open=data['Open'], high=data['High'], low=data['Low'], close=data['Close'], name=stock.ticker + 'Market Price'))
             fig.add_trace(go.Scatter(x=data['Date'], y=data['50_SMA'], name='50 Day Moving Average', marker_color='rgba(13, 140, 214, .8)'))
             fig.add_trace(go.Scatter(x=data['Date'], y=data['100_SMA'], name='100 Day Moving Average', marker_color='rgba(230, 223, 23, .8)'))
             fig.add_trace(go.Scatter(x=data['Date'], y=data['200_SMA'], name='200 Day Moving Average', marker_color='rgba(255, 165, 0, .8)'))
@@ -177,13 +175,13 @@ class visualize:
 
         data = []
         for stock in stocks:
-            data.append(stock_wrapper.data.get_history(stock.ticker, calculate_averages=True))
+            data.append(stock_wrapper.data.get_history(stock.ticker, calculate_averages=True, cache=cache))
 
         for i in range(len(data)):
             __graph(stocks[i], data[i])
 
     @staticmethod
-    def graph_trendline_analysis(stocks):
+    def graph_trendline_analysis(stocks, cache):
         """Takes in a list of Ticker Symbols and optional span. Displays a matplot graph with the history of that stock, default span to one day
         :param stock: list of Stock objects
         :type stock: list [<stock_wrapper.Stock>]
@@ -214,7 +212,7 @@ class visualize:
 
         data = []
         for stock in stocks:
-            data.append(stock_wrapper.data.get_history(stock.ticker, calculate_averages=True))
+            data.append(stock_wrapper.data.get_history(stock.ticker, calculate_averages=True, cache=cache))
 
         for i in range(len(data)):
             __graph(stocks[i], data[i])

@@ -1,1 +1,4 @@
 dist/
+MANIFEST
+index.py
+stock_wrapper/__cache__/
