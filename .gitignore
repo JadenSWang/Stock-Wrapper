@@ -1,4 +1,7 @@
 dist/
-MANIFEST
 index.py
 stock_wrapper/__cache__/
+
+setup.cfg
+setup.py
+MANIFEST
