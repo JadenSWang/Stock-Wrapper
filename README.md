@@ -55,7 +55,7 @@ Place your stock object inside brackets, as of now, visualization methods take i
 
 The graphing might take a couple seconds since it's loading years and years of data and calculating various moving averages
 
-If you want to graph multiple stocks, its best to group them like so
+If you want to graph multiple stocks, its best to group them like so as this streamlines the data loading process
 > microsoft = Stock('MSFT')
 >
 > visualize.graph_trendline_analysis([snp, microsoft])
