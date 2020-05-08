@@ -165,7 +165,7 @@ class visualize:
             sns.set(style="darkgrid")
 
             fig = make_subplots(specs=[[{"secondary_y": True}]])
-            fig.add_trace(go.Candlestick(x=data['Date'], open=data['Open'], high=data['High'], low=data['Low'], close=data['Close'], name=stock.ticker + 'Market Price'))
+            fig.add_trace(go.Candlestick(x=data['Date'], open=data['Open'], high=data['High'], low=data['Low'], close=data['Close'], name=stock.ticker + ' Market Price'))
             fig.add_trace(go.Scatter(x=data['Date'], y=data['50_SMA'], name='50 Day Moving Average', marker_color='rgba(13, 140, 214, .8)'))
             fig.add_trace(go.Scatter(x=data['Date'], y=data['100_SMA'], name='100 Day Moving Average', marker_color='rgba(230, 223, 23, .8)'))
             fig.add_trace(go.Scatter(x=data['Date'], y=data['200_SMA'], name='200 Day Moving Average', marker_color='rgba(255, 165, 0, .8)'))
