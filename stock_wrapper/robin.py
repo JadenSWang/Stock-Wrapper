@@ -28,6 +28,17 @@ class robin:
         return shares
 
     @classmethod
+    def build_watchlist(cls):
+        """
+        :return:
+        """
+        shares = []
+        for ticker in robin_stocks.account.get_watchlist_by_name():
+            shares.append(stock_wrapper.Shares(robin_stocks.get_instrument_by_url(ticker['instrument'])['symbol']))
+
+        return shares
+
+    @classmethod
     def print_portfolio(cls):
         """Fetches a list of owned stocks and displays them in the following format
 

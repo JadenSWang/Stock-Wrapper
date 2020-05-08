@@ -176,9 +176,20 @@ class visualize:
 
             fig.show()
 
+        def __gather_data(index, data_array, stock):
+            data = stock_wrapper.data.get_history(stock.ticker, calculate_averages=True, cache=cache)
+            data_array[index] = data
+
         data = []
-        for stock in stocks:
-            data.append(stock_wrapper.data.get_history(stock.ticker, calculate_averages=True, cache=cache))
+        threads = []
+        for i in range(len(stocks)):
+            thread = threading.Thread(target=__gather_data, args=(i, data, stocks[i]))
+
+            thread.start()
+            threads.append(thread)
+
+        for thread in threads:
+            thread.join()
 
         for i in range(len(data)):
             __graph(stocks[i], data[i])
@@ -217,9 +228,20 @@ class visualize:
             plt.xlabel("Date")
             plt.ylabel("Price ($)")
 
+        def __gather_data(index, data_array, stock):
+            data = stock_wrapper.data.get_history(stock.ticker, calculate_averages=True, cache=cache)
+            data_array[index] = data
+
         data = []
-        for stock in stocks:
-            data.append(stock_wrapper.data.get_history(stock.ticker, calculate_averages=True, cache=cache))
+        threads = []
+        for i in range(len(stocks)):
+            thread = threading.Thread(target=__gather_data, args=(i, data, stocks[i]))
+
+            thread.start()
+            threads.append(thread)
+
+        for thread in threads:
+            thread.join()
 
         for i in range(len(data)):
             __graph(stocks[i], data[i])
