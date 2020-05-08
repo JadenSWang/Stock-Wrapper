@@ -153,7 +153,7 @@ class visualize:
         plt.show()
 
     @staticmethod
-    def graph_candlestick_analysis(stocks, cache=True):
+    def graph_candlestick_analysis(stocks, cache=True, rangeslider=True):
         """Takes in a list of Ticker Symbols and optional span. Displays a matplot graph with the history of that stock, default span to one day
         :param stock: list of Stock objects
         :type stock: list [<stock_wrapper.Stock>]
@@ -172,6 +172,8 @@ class visualize:
             fig.add_trace(go.Scatter(x=data['Date'], y=data['200_SMA'], name='200 Day Moving Average', marker_color='rgba(255, 165, 0, .8)'))
             fig.add_trace(go.Scatter(x=data['Date'], y=data['Volume'], name='Volume', marker_color='rgba(130, 178, 255, .8)'), secondary_y=True)
 
+            fig.update_layout(xaxis_rangeslider_visible=rangeslider)
+
             fig.show()
 
         data = []
@@ -180,6 +182,7 @@ class visualize:
 
         for i in range(len(data)):
             __graph(stocks[i], data[i])
+
 
     @staticmethod
     def graph_trendline_analysis(stocks, cache=True):
