@@ -166,8 +166,9 @@ class visualize:
 
             fig = make_subplots(specs=[[{"secondary_y": True}]])
             fig.add_trace(go.Candlestick(x=data['Date'], open=data['Open'], high=data['High'], low=data['Low'], close=data['Close'], name=stock.ticker + ' Market Price'))
-            fig.add_trace(go.Scatter(x=data['Date'], y=data['50_SMA'], name='50 Day Moving Average', marker_color='rgba(13, 140, 214, .8)'))
-            fig.add_trace(go.Scatter(x=data['Date'], y=data['100_SMA'], name='100 Day Moving Average', marker_color='rgba(230, 223, 23, .8)'))
+            fig.add_trace(go.Scatter(x=data['Date'], y=data['10_SMA'], name='10 Day Moving Average', marker_color='rgba(13, 140, 214, .8)'))
+            fig.add_trace(go.Scatter(x=data['Date'], y=data['20_SMA'], name='20 Day Moving Average', marker_color='rgba(230, 223, 23, .8)'))
+            fig.add_trace(go.Scatter(x=data['Date'], y=data['100_SMA'], name='100 Day Moving Average', marker_color='rgba(230, 223, 23, .4)'))
             fig.add_trace(go.Scatter(x=data['Date'], y=data['200_SMA'], name='200 Day Moving Average', marker_color='rgba(255, 165, 0, .8)'))
             fig.add_trace(go.Scatter(x=data['Date'], y=data['Volume'], name='Volume', marker_color='rgba(130, 178, 255, .8)'), secondary_y=True)
 
@@ -181,7 +182,7 @@ class visualize:
             __graph(stocks[i], data[i])
 
     @staticmethod
-    def graph_trendline_analysis(stocks, cache):
+    def graph_trendline_analysis(stocks, cache=True):
         """Takes in a list of Ticker Symbols and optional span. Displays a matplot graph with the history of that stock, default span to one day
         :param stock: list of Stock objects
         :type stock: list [<stock_wrapper.Stock>]

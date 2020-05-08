@@ -44,7 +44,8 @@ class data:
                         index += 1
 
             if calculate_averages:
-                __build_average(history, 50)
+                __build_average(history, 10)
+                __build_average(history, 20)
                 __build_average(history, 100)
                 __build_average(history, 200)
 
