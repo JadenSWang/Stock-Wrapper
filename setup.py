@@ -2,13 +2,13 @@ from distutils.core import setup
 setup(
   name = 'stock_wrapper',
   packages = ['stock_wrapper'],   # Chose the same as "name"
-  version = '0.1.1',
+  version = '0.2',
   license='MIT',
   description = 'A wrapper to handle all of your stock data and trading needs',
   author = 'Jaden Shiteng Wang',
   author_email = 'jaden.shiteng.wang@gmail.com',
   url = 'https://github.com/JadenSWang/Stock-Wrapper',
-  download_url = 'https://github.com/JadenSWang/Stock-Wrapper/archive/0.1.tar.gz',    # I explain this later on
+  download_url = 'https://github.com/JadenSWang/Stock-Wrapper/archive/0.2.tar.gz',    # I explain this later on
   keywords = ['stocks', 'yfinance', 'robinhood'],
   install_requires=[            # I get to this in a second
           'yfinance',

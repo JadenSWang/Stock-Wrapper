@@ -82,7 +82,7 @@ class data:
     class cache:
         @staticmethod
         def read_file(ticker_name):
-            path = os.path.abspath('stock_wrapper/__cache__/' + ticker_name + '.py')
+            path = os.path.abspath('__stock_cache__/' + ticker_name + '.py')
             with open(path) as json_file:
                 data = json.load(json_file)
 
@@ -90,17 +90,20 @@ class data:
 
         @staticmethod
         def write_file(ticker_name, data):
-            path = os.path.abspath('stock_wrapper/__cache__/' + ticker_name + '.py')
+            if not os.path.exists(os.path.abspath('__stock_cache__')):
+                os.makedirs(os.path.abspath('__stock_cache__'))
+
+            path = os.path.abspath('__stock_cache__/' + ticker_name + '.py')
             with open(path, 'w+') as outfile:
                 json.dump(data, outfile)
 
         @staticmethod
         def exists(ticker_name):
-            path = os.path.abspath('stock_wrapper/__cache__/' + ticker_name + '.py')
+            path = os.path.abspath('__stock_cache__/' + ticker_name + '.py')
             return os.path.exists(path)
 
         @staticmethod
         def clear():
-            dirpath = os.path.abspath('stock_wrapper/__cache__/')
+            dirpath = os.path.abspath('__stock_cache__/')
             for path in os.listdir(dirpath):
-                os.remove(os.path.abspath('stock_wrapper/__cache__/' + path))
+                os.remove(os.path.abspath('__stock_cache__/' + path))
