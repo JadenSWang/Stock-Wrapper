@@ -1,6 +1,7 @@
 dist/
 index.py
 stock_wrapper/__cache__/
+__stock_cache__
 
 setup.cfg
 setup.py
