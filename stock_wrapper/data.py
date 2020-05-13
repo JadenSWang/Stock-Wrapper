@@ -37,10 +37,11 @@ class data:
         if cache and cls.cache.exists(ticker_symbol, span, interval):
             return pd.read_json(cls.cache.read_file(ticker_symbol, span, interval))
         else:
-            history = yfinance.download(tickers=ticker_symbol, period=cls.__switcher[span], group_by='ticker', interval=interval).reset_index()
+            history = yfinance.download(tickers=ticker_symbol, period=cls.__switcher[span], group_by='ticker', prepost=True, interval=interval).reset_index()
+
             history['Average'] = (history['High'] + history['Low']) / 2
 
-            def __build_average(df, period):
+            def __build_average(period):
                 name = (str(period) + '_SMA')
 
                 if len(history) > period:
@@ -52,10 +53,15 @@ class data:
                         index += 1
 
             if calculate_averages:
-                __build_average(history, 10)
-                __build_average(history, 20)
-                __build_average(history, 100)
-                __build_average(history, 200)
+                __build_average(10)
+                __build_average(20)
+                __build_average(100)
+                __build_average(200)
+
+            if history.columns.values[0] != 'Date':
+                headers = history.columns.values
+                headers[0] = 'Date'
+                history.columns = headers
 
             cls.cache.write_file(ticker_symbol, span, interval, history.to_json())
 

@@ -153,7 +153,7 @@ class visualize:
         plt.show()
 
     @classmethod
-    def graph_candlestick_analysis(cls, stocks, cache=True, rangeslider=True, span='week'):
+    def graph_candlestick_analysis(cls, stocks, cache=True, rangeslider=True, span='max'):
         """Takes in a list of Ticker Symbols and optional span. Displays a matplot graph with the history of that stock, default span to one day
         :param stock: list of Stock objects
         :type stock: list [<stock_wrapper.Stock>]
@@ -168,11 +168,11 @@ class visualize:
 
             fig = make_subplots(specs=[[{"secondary_y": True}]])
             fig.add_trace(go.Candlestick(x=data['Date'], open=data['Open'], high=data['High'], low=data['Low'], close=data['Close'], name=stock.ticker + ' Market Price'))
-            fig.add_trace(go.Scatter(x=data['Datetime'], y=data['10_SMA'], name='10 Day Moving Average', marker_color='rgba(13, 140, 214, .8)'))
-            fig.add_trace(go.Scatter(x=data['Datetime'], y=data['20_SMA'], name='20 Day Moving Average', marker_color='rgba(230, 223, 23, .8)'))
-            fig.add_trace(go.Scatter(x=data['Datetime'], y=data['100_SMA'], name='100 Day Moving Average', marker_color='rgba(230, 223, 23, .4)'))
-            fig.add_trace(go.Scatter(x=data['Datetime'], y=data['200_SMA'], name='200 Day Moving Average', marker_color='rgba(255, 165, 0, .8)'))
-            fig.add_trace(go.Scatter(x=data['Datetime'], y=data['Volume'], name='Volume', marker_color='rgba(130, 178, 255, .8)'), secondary_y=True)
+            fig.add_trace(go.Scatter(x=data['Date'], y=data['10_SMA'], name='10 Day Moving Average', marker_color='rgba(13, 140, 214, .8)'))
+            fig.add_trace(go.Scatter(x=data['Date'], y=data['20_SMA'], name='20 Day Moving Average', marker_color='rgba(230, 223, 23, .8)'))
+            fig.add_trace(go.Scatter(x=data['Date'], y=data['100_SMA'], name='100 Day Moving Average', marker_color='rgba(230, 223, 23, .4)'))
+            fig.add_trace(go.Scatter(x=data['Date'], y=data['200_SMA'], name='200 Day Moving Average', marker_color='rgba(255, 165, 0, .8)'))
+            fig.add_trace(go.Scatter(x=data['Date'], y=data['Volume'], name='Volume', marker_color='rgba(130, 178, 255, .8)'), secondary_y=True)
 
             fig.update_layout(xaxis_rangeslider_visible=rangeslider)
 
@@ -185,7 +185,7 @@ class visualize:
 
 
     @classmethod
-    def graph_trendline_analysis(cls, stocks, cache=True, span='week'):
+    def graph_trendline_analysis(cls, stocks, cache=True, span='max'):
         """Takes in a list of Ticker Symbols and optional span. Displays a matplot graph with the history of that stock, default span to one day
         :param stock: list of Stock objects
         :type stock: list [<stock_wrapper.Stock>]
@@ -198,13 +198,12 @@ class visualize:
         def __graph(stock, data):
             sns.set(style="darkgrid")
 
-            xname = data.columns.values[0]
             plt.figure()
-            ax = sns.lineplot(x=xname, y="Close", color='#82b2ff', data=data)
-            sns.lineplot(x=xname, y="10_SMA", color='#0d5ad6', data=data)
-            sns.lineplot(x=xname, y="20_SMA", color='#e6df17', data=data)
-            sns.lineplot(x=xname, y="100_SMA", color='#ffa500', data=data)
-            sns.lineplot(x=xname, y="200_SMA", color='#fc7b03', data=data)
+            ax = sns.lineplot(x='Date', y="Close", color='#82b2ff', data=data)
+            sns.lineplot(x='Date', y="10_SMA", color='#0d5ad6', data=data)
+            sns.lineplot(x='Date', y="20_SMA", color='#e6df17', data=data)
+            sns.lineplot(x='Date', y="100_SMA", color='#ffa500', data=data)
+            sns.lineplot(x='Date', y="200_SMA", color='#fc7b03', data=data)
 
             close_patch = mpatches.Patch(color='#82b2ff', label='Close Price')
             sma_10_patch = mpatches.Patch(color='#0d5ad6', label='10 Day Moving Average')
@@ -265,19 +264,20 @@ class visualize:
     def __load_data(stocks, span, cache=True):
         converter = {'week': '1m', 'max': '1d'}
 
-        def __gather_data(index, data_array, stock):
-            data = stock_wrapper.data.get_history(stock.ticker, calculate_averages=True, cache=cache, span=span, interval=converter[span])
-            data_array[index] = data
+        # def __gather_data(i, list, symbol):
+        #     list[i] = stock_wrapper.data.get_history(symbol, span='week', interval=converter[span], cache=cache)
+        #
+        # threads = []
+        histories = []
+        # for i in range(len(stocks)):
+        #     thread = threading.Thread(target=__gather_data, args=(i, histories, stocks[i].ticker))
+        #     threads.append(thread)
+        #     thread.start()
+        #
+        # for thread in threads:
+        #     thread.join()
 
-        data = [None] * len(stocks)
-        threads = []
-        for i in range(len(stocks)):
-            thread = threading.Thread(target=__gather_data, args=(i, data, stocks[i]))
+        for stock in stocks:
+            histories.append(stock_wrapper.data.get_history(stock.ticker, span='week', interval=converter[span], cache=cache))
 
-            thread.start()
-            threads.append(thread)
-
-        for thread in threads:
-            thread.join()
-
-        return data
+        return histories
