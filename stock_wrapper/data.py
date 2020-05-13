@@ -20,7 +20,7 @@ class data:
     }
 
     @classmethod
-    def get_history(cls, ticker_symbol, span='week', interval='1m', calculate_averages=True, cache=True):
+    def get_history(cls, ticker_symbol, span='week', interval='1m', calculate_averages=True, cache=False, extended=False):
         """Takes in a ticker object and returns a pandas dataframe containing price,
         :param ticker_symbol: single Ticker Symbol
         :type ticker_symbol: str
@@ -37,7 +37,7 @@ class data:
         if cache and cls.cache.exists(ticker_symbol, span, interval):
             return pd.read_json(cls.cache.read_file(ticker_symbol, span, interval))
         else:
-            history = yfinance.download(tickers=ticker_symbol, period=cls.__switcher[span], group_by='ticker', prepost=True, interval=interval).reset_index()
+            history = yfinance.download(tickers=ticker_symbol, period=cls.__switcher[span], group_by='ticker', prepost=extended, interval=interval).reset_index()
 
             history['Average'] = (history['High'] + history['Low']) / 2
 
@@ -119,9 +119,10 @@ class data:
 
         @staticmethod
         def clear():
-            dirpath = os.path.abspath('__stock_cache__/')
-            for path in os.listdir(dirpath):
-                os.remove(os.path.abspath('__stock_cache__/' + path))
+            if os.path.exists(os.path.abspath('__stock_cache__')):
+                dirpath = os.path.abspath('__stock_cache__/')
+                for path in os.listdir(dirpath):
+                    os.remove(os.path.abspath('__stock_cache__/' + path))
 
         @classmethod
         def __get_path(cls, ticker_name, span, interval):

@@ -183,7 +183,6 @@ class visualize:
         for i in range(len(data)):
             __graph(stocks[i], data[i])
 
-
     @classmethod
     def graph_trendline_analysis(cls, stocks, cache=True, span='max'):
         """Takes in a list of Ticker Symbols and optional span. Displays a matplot graph with the history of that stock, default span to one day
@@ -262,7 +261,7 @@ class visualize:
 
     @staticmethod
     def __load_data(stocks, span, cache=True):
-        converter = {'week': '1m', 'max': '1d'}
+        converter = {'week': '1m', 'month':'30m', 'max': '1d'}
 
         # def __gather_data(i, list, symbol):
         #     list[i] = stock_wrapper.data.get_history(symbol, span='week', interval=converter[span], cache=cache)
@@ -278,6 +277,6 @@ class visualize:
         #     thread.join()
 
         for stock in stocks:
-            histories.append(stock_wrapper.data.get_history(stock.ticker, span='week', interval=converter[span], cache=cache))
+            histories.append(stock_wrapper.data.get_history(stock.ticker, span=span, interval=converter[span], cache=cache))
 
         return histories
