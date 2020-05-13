@@ -20,23 +20,31 @@ class data:
     }
 
     @classmethod
-    def get_history(cls, ticker_symbol, calculate_averages=True, cache=True):
+    def get_history(cls, ticker_symbol, span='week', interval='1m', calculate_averages=True, cache=True):
         """Takes in a ticker object and returns a pandas dataframe containing price,
-        :param stock: single Ticker Symbol
-        :type: str
-        :return: [list]: (timeframe <datetime.datetime>, price <int>)
+        :param ticker_symbol: single Ticker Symbol
+        :type ticker_symbol: str
+        :param span: How much data to retrieve
+        :type span: str, [day, week, month, 3month, year, max]
+        :param interval: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+        :type interval: str
+        :param calculate_averages: Whether or not to calculate moving averages
+        :type calculate_averages: bool
+        :param cache: whether or not to retrieve/store in cache
+        :type cache: bool
+        :return: pandas dataframe
         """
-        if cache and cls.cache.exists(ticker_symbol):
-            return pd.read_json(cls.cache.read_file(ticker_symbol))
+        if cache and cls.cache.exists(ticker_symbol, span, interval):
+            return pd.read_json(cls.cache.read_file(ticker_symbol, span, interval))
         else:
-            history = yfinance.Ticker(ticker_symbol).history(period='max').reset_index()
+            history = yfinance.download(tickers=ticker_symbol, period=cls.__switcher[span], group_by='ticker', interval=interval).reset_index()
             history['Average'] = (history['High'] + history['Low']) / 2
 
             def __build_average(df, period):
                 name = (str(period) + '_SMA')
 
                 if len(history) > period:
-                    history.loc[0:period, name] = 0
+                    history.loc[0:period, name] = np.nan
 
                     index = period + 1
                     while index < len(history):
@@ -49,15 +57,15 @@ class data:
                 __build_average(history, 100)
                 __build_average(history, 200)
 
-            cls.cache.write_file(ticker_symbol, history.to_json())
+            cls.cache.write_file(ticker_symbol, span, interval, history.to_json())
 
         return history
 
     @classmethod
     def get_historical_prices(cls, ticker_symbol, span='day'):
         """Takes a single Ticker Symbol to build a list of tuples representing a time_frame and its respective price
-        :param stock: single Ticker Symbol
-        :type: str
+        :param ticker_symbol: single Ticker Symbol
+        :type ticker_symbol: str
         :param span: width of the history of the selected stock
         :type: str
         :return: [list]: (timeframe <datetime.datetime>, price <int>)
@@ -81,26 +89,26 @@ class data:
         cls.cache.clear()
 
     class cache:
-        @staticmethod
-        def read_file(ticker_name):
-            path = os.path.abspath('__stock_cache__/' + ticker_name + '.py')
+        @classmethod
+        def read_file(cls, ticker_name, span, interval):
+            path = cls.__get_path(ticker_name, span, interval)
             with open(path) as json_file:
                 data = json.load(json_file)
 
             return data
 
-        @staticmethod
-        def write_file(ticker_name, data):
+        @classmethod
+        def write_file(cls, ticker_name, span, interval, data):
             if not os.path.exists(os.path.abspath('__stock_cache__')):
                 os.makedirs(os.path.abspath('__stock_cache__'))
 
-            path = os.path.abspath('__stock_cache__/' + ticker_name + '.py')
+            path = cls.__get_path(ticker_name, span, interval)
             with open(path, 'w+') as outfile:
                 json.dump(data, outfile)
 
-        @staticmethod
-        def exists(ticker_name):
-            path = os.path.abspath('__stock_cache__/' + ticker_name + '.py')
+        @classmethod
+        def exists(cls, ticker_name, span, interval):
+            path = cls.__get_path(ticker_name, span, interval)
             return os.path.exists(path)
 
         @staticmethod
@@ -108,3 +116,7 @@ class data:
             dirpath = os.path.abspath('__stock_cache__/')
             for path in os.listdir(dirpath):
                 os.remove(os.path.abspath('__stock_cache__/' + path))
+
+        @classmethod
+        def __get_path(cls, ticker_name, span, interval):
+            return os.path.abspath('__stock_cache__/' + ticker_name + '_' + span + '_' + interval + '.py')
