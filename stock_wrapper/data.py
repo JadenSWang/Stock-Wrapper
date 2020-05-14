@@ -20,10 +20,10 @@ class data:
     }
 
     @classmethod
-    def get_history(cls, ticker_symbol, span='week', interval='1m', calculate_averages=True, cache=False, extended=False):
+    def get_history(cls, tickers, span='week', interval='1m', calculate_averages=True, cache=False, extended=False):
         """Takes in a ticker object and returns a pandas dataframe containing price,
-        :param ticker_symbol: single Ticker Symbol
-        :type ticker_symbol: str
+        :param ticker_symbols: Single Ticker object or list of Ticker objects
+        :type ticker_symbols: str
         :param span: How much data to retrieve
         :type span: str, [day, week, month, 3month, year, max]
         :param interval: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
@@ -34,36 +34,44 @@ class data:
         :type cache: bool
         :return: pandas dataframe
         """
-        if cache and cls.cache.exists(ticker_symbol, span, interval):
-            return pd.read_json(cls.cache.read_file(ticker_symbol, span, interval))
-        else:
-            history = yfinance.download(tickers=ticker_symbol, period=cls.__switcher[span], group_by='ticker', prepost=extended, interval=interval).reset_index()
+        # if cache and cls.cache.exists(ticker_symbol, span, interval):
+        #     return pd.read_json(cls.cache.read_file(ticker_symbol, span, interval))
+        # else:
+        if isinstance(tickers, stock_wrapper.Stock):
+            tickers = [tickers]
 
-            history['Average'] = (history['High'] + history['Low']) / 2
+        ticker_symbols = ''
+        for ticker in tickers:
+            ticker_symbols += ticker.ticker + ' '
 
-            def __build_average(period):
-                name = (str(period) + '_SMA')
-
-                if len(history) > period:
-                    history.loc[0:period, name] = np.nan
-
-                    index = period + 1
-                    while index < len(history):
-                        history.iloc[index, history.columns.get_loc(name)] = history.iloc[index - period:index]['Close'].sum() / period
-                        index += 1
-
-            if calculate_averages:
-                __build_average(10)
-                __build_average(20)
-                __build_average(100)
-                __build_average(200)
-
-            if history.columns.values[0] != 'Date':
-                headers = history.columns.values
-                headers[0] = 'Date'
-                history.columns = headers
-
-            cls.cache.write_file(ticker_symbol, span, interval, history.to_json())
+        if True:
+            history = yfinance.download(tickers=ticker_symbols, period=cls.__switcher[span], group_by='ticker', prepost=extended, interval=interval).reset_index()
+            print(history)
+            # history['Average'] = (history['High'] + history['Low']) / 2
+            #
+            # def __build_average(period):
+            #     name = (str(period) + '_SMA')
+            #
+            #     if len(history) > period:
+            #         history.loc[0:period, name] = np.nan
+            #
+            #         index = period + 1
+            #         while index < len(history):
+            #             history.iloc[index, history.columns.get_loc(name)] = history.iloc[index - period:index]['Close'].sum() / period
+            #             index += 1
+            #
+            # if calculate_averages:
+            #     __build_average(10)
+            #     __build_average(20)
+            #     __build_average(100)
+            #     __build_average(200)
+            #
+            # if history.columns.values[0] != 'Date':
+            #     headers = history.columns.values
+            #     headers[0] = 'Date'
+            #     history.columns = headers
+            #
+            # cls.cache.write_file(ticker_symbol, span, interval, history.to_json())
 
         return history
 
