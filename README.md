@@ -29,33 +29,42 @@ Complete example is under Examples/example.py
 
 Most of the data manipulation is based off the <stock_wrapper.Stock> object. 
 
+Note: The package is constantly being updated, 
+
 ##### We will be using the S&P 500 Index as an example
-> from stock_wrapper import Stock 
->
-> snp = Stock('SPY')
+
+```
+from stock_wrapper import Stock 
+snp = Stock('SPY')
+```
 
 ##### Stock_Wrapper 
-> high_price = snp.high
->
-> low_price = snp.low
-
-Other properties include open, close, ceo, history, etc.
+```
+high_price = snp.high
+low_price = snp.low
+```
+Other properties include open, close, market_cap, history, etc.
 
 ##### Visualization
-> from stock_wrapper import visualize
-> from stock_wrapper import Stock
+```
+from stock_wrapper import visualize
+from stock_wrapper import Stock
+```
 
 Place your stock object inside brackets, as of now, visualization methods take in a list of Stock objects
 
-> snp = Stock('SPY')
->
-> visualize.graph_trendline_analysis([snp])
->
-> visualize.graph_candlestick_analysis([snp])
+```
+snp = Stock('SPY')
+visualize.graph_trendline_analysis([snp])
+visualize.graph_candlestick_analysis([snp])
+```
 
 The graphing might take a couple seconds since it's loading years and years of data and calculating various moving averages
 
 If you want to graph multiple stocks, its best to group them like so as this streamlines the data loading process
-> microsoft = Stock('MSFT')
->
-> visualize.graph_trendline_analysis([snp, microsoft])
+
+```
+microsoft = Stock('MSFT')
+visualize.graph_trendline_analysis([snp, microsoft])
+
+```
