@@ -71,25 +71,6 @@ class data:
 
         return history
 
-    @classmethod
-    def get_historical_prices(cls, ticker_symbol, span='day'):
-        """Takes a single Ticker Symbol to build a list of tuples representing a time_frame and its respective price
-        :param ticker_symbol: single Ticker Symbol
-        :type ticker_symbol: str
-        :param span: width of the history of the selected stock
-        :type: str
-        :return: [list]: (timeframe <datetime.datetime>, price <int>)
-        """
-
-        history = robin_stocks.get_historicals(ticker_symbol, span=span)
-        for time_frame in history:
-            time_frame['begins_at'] = cls.__get_time(time_frame['begins_at'])
-
-        historicals_df = pd.DataFrame(history).astype({'open_price': 'float32', 'close_price': 'float32'})
-        historicals_df['Average'] = historicals_df.apply(lambda row: (row.open_price + row.close_price) / 2, axis=1)
-        historicals_df = historicals_df.rename(columns={'begins_at':'Date', 'open_price':'Open', 'close_price':'Close', 'high_price':'High', 'low_price':'Low', 'symbol':'Symbol', 'volume':'Volume', 'session':'Session', 'interpolated':'Interpolated'})
-        return historicals_df
-
     @staticmethod
     def __get_time(time, conversion=-5):
         return datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ") + datetime.timedelta(hours=conversion)
