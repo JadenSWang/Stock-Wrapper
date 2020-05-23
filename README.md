@@ -9,8 +9,9 @@ No API key is needed, all data is 100% free and accessible from yahoo finance an
 free API. 
 
 ### Installation
-Setup is simple, simply type 
-> pip install stock_wrapper
+Setup is simple, simply type
+> pip install --upgrade stock_wrapper
+#####note: this package is constantly updated so use --upgrade to fetch the latest results!
 
 If you wish to use the source code simply download this repository, its free forever, I promise
 
