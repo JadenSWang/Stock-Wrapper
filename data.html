@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.4" />
+<title>stock_wrapper.data API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>stock_wrapper.data</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import stock_wrapper
+
+import yfinance
+import robin_stocks
+import pandas as pd
+import os
+import numpy as np
+
+import json
+import datetime
+
+class data:
+    __switcher = {
+        &#39;day&#39;: &#39;1d&#39;,
+        &#39;week&#39;: &#39;5d&#39;,
+        &#39;month&#39;: &#39;1mo&#39;,
+        &#39;3month&#39;: &#39;3mo&#39;,
+        &#39;year&#39;: &#39;1y&#39;,
+        &#39;max&#39;: &#39;max&#39;
+    }
+
+    @classmethod
+    def get_history(cls, tickers, span=&#39;day&#39;, interval=&#39;1m&#39;, calculate_averages=[&#39;&#39;], averages_to_calculate=[10, 20],  cache=False, extended=False):
+        &#34;&#34;&#34;Takes in a ticker object and returns a pandas dataframe containing price,
+        :param tickers: Single Ticker object or list of Ticker objects
+        :type tickers: str
+        :param span: How much data to retrieve
+        :type span: str, [day, week, month, 3month, year, max]
+        :param interval: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+        :type interval: str
+        :param calculate_averages: Whether or not to calculate moving averages
+        :type calculate_averages: bool
+        :param cache: whether or not to retrieve/store in cache
+        :type cache: bool
+        :return: pandas dataframe
+        &#34;&#34;&#34;
+
+        if not isinstance(tickers, list):
+            tickers = [tickers]
+
+        ticker_symbols = &#39;&#39;
+        for ticker in tickers:
+            if isinstance(ticker, stock_wrapper.Stock):
+                ticker_symbols += ticker.ticker + &#39; &#39;
+            else:
+                ticker_symbols += ticker + &#39; &#39;
+        ticker_symbols = ticker_symbols[:-1]
+
+        # downloaded history
+        history = yfinance.download(tickers=ticker_symbols, period=cls.__switcher[span], group_by=&#39;ticker&#39;, prepost=extended, interval=interval).reset_index()
+
+        ticker_symbols = ticker_symbols.split(&#34; &#34;)
+        if calculate_averages:
+            for symbol in ticker_symbols:
+                history[symbol, &#34;Average&#34;] = (history[symbol][&#39;High&#39;] + history[symbol][&#39;Low&#39;]) / 2
+
+                def __build_average(period):
+                    name = (&#39;SMA_&#39; + str(period))
+                    history[(symbol, name)] = history[symbol][&#39;Close&#39;].rolling(period).mean()
+
+                for average in averages_to_calculate:
+                    if not isinstance(average, int):
+                        raise Exception(&#34;Averages are numbers of days and must be of type int&#34;)
+
+                    __build_average(average)
+
+                # if history.columns.values[0] != &#39;Date&#39;:
+                #     headers = history.columns.values
+                #     headers[0] = &#39;Date&#39;
+                #     history.columns = headers
+
+        return history
+
+    @staticmethod
+    def __get_time(time, conversion=-5):
+        return datetime.datetime.strptime(time, &#34;%Y-%m-%dT%H:%M:%SZ&#34;) + datetime.timedelta(hours=conversion)
+
+    @classmethod
+    def clear_cache(cls):
+        cls.cache.clear()
+
+    class cache:
+        @classmethod
+        def read_file(cls, ticker_name, span, interval):
+            path = cls.__get_path(ticker_name, span, interval)
+            with open(path) as json_file:
+                data = json.load(json_file)
+
+            return data
+
+        @classmethod
+        def write_file(cls, ticker_name, span, interval, data):
+            if not os.path.exists(os.path.abspath(&#39;__stock_cache__&#39;)):
+                os.makedirs(os.path.abspath(&#39;__stock_cache__&#39;))
+
+            path = cls.__get_path(ticker_name, span, interval)
+            with open(path, &#39;w+&#39;) as outfile:
+                json.dump(data, outfile)
+
+        @classmethod
+        def exists(cls, ticker_name, span, interval):
+            path = cls.__get_path(ticker_name, span, interval)
+            return os.path.exists(path)
+
+        @staticmethod
+        def clear():
+            if os.path.exists(os.path.abspath(&#39;__stock_cache__&#39;)):
+                dirpath = os.path.abspath(&#39;__stock_cache__/&#39;)
+                for path in os.listdir(dirpath):
+                    os.remove(os.path.abspath(&#39;__stock_cache__/&#39; + path))
+
+        @classmethod
+        def __get_path(cls, ticker_name, span, interval):
+            return os.path.abspath(&#39;__stock_cache__/&#39; + ticker_name + &#39;_&#39; + span + &#39;_&#39; + interval + &#39;.py&#39;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="stock_wrapper.data.data"><code class="flex name class">
+<span>class <span class="ident">data</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class data:
+    __switcher = {
+        &#39;day&#39;: &#39;1d&#39;,
+        &#39;week&#39;: &#39;5d&#39;,
+        &#39;month&#39;: &#39;1mo&#39;,
+        &#39;3month&#39;: &#39;3mo&#39;,
+        &#39;year&#39;: &#39;1y&#39;,
+        &#39;max&#39;: &#39;max&#39;
+    }
+
+    @classmethod
+    def get_history(cls, tickers, span=&#39;day&#39;, interval=&#39;1m&#39;, calculate_averages=[&#39;&#39;], averages_to_calculate=[10, 20],  cache=False, extended=False):
+        &#34;&#34;&#34;Takes in a ticker object and returns a pandas dataframe containing price,
+        :param tickers: Single Ticker object or list of Ticker objects
+        :type tickers: str
+        :param span: How much data to retrieve
+        :type span: str, [day, week, month, 3month, year, max]
+        :param interval: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+        :type interval: str
+        :param calculate_averages: Whether or not to calculate moving averages
+        :type calculate_averages: bool
+        :param cache: whether or not to retrieve/store in cache
+        :type cache: bool
+        :return: pandas dataframe
+        &#34;&#34;&#34;
+
+        if not isinstance(tickers, list):
+            tickers = [tickers]
+
+        ticker_symbols = &#39;&#39;
+        for ticker in tickers:
+            if isinstance(ticker, stock_wrapper.Stock):
+                ticker_symbols += ticker.ticker + &#39; &#39;
+            else:
+                ticker_symbols += ticker + &#39; &#39;
+        ticker_symbols = ticker_symbols[:-1]
+
+        # downloaded history
+        history = yfinance.download(tickers=ticker_symbols, period=cls.__switcher[span], group_by=&#39;ticker&#39;, prepost=extended, interval=interval).reset_index()
+
+        ticker_symbols = ticker_symbols.split(&#34; &#34;)
+        if calculate_averages:
+            for symbol in ticker_symbols:
+                history[symbol, &#34;Average&#34;] = (history[symbol][&#39;High&#39;] + history[symbol][&#39;Low&#39;]) / 2
+
+                def __build_average(period):
+                    name = (&#39;SMA_&#39; + str(period))
+                    history[(symbol, name)] = history[symbol][&#39;Close&#39;].rolling(period).mean()
+
+                for average in averages_to_calculate:
+                    if not isinstance(average, int):
+                        raise Exception(&#34;Averages are numbers of days and must be of type int&#34;)
+
+                    __build_average(average)
+
+                # if history.columns.values[0] != &#39;Date&#39;:
+                #     headers = history.columns.values
+                #     headers[0] = &#39;Date&#39;
+                #     history.columns = headers
+
+        return history
+
+    @staticmethod
+    def __get_time(time, conversion=-5):
+        return datetime.datetime.strptime(time, &#34;%Y-%m-%dT%H:%M:%SZ&#34;) + datetime.timedelta(hours=conversion)
+
+    @classmethod
+    def clear_cache(cls):
+        cls.cache.clear()
+
+    class cache:
+        @classmethod
+        def read_file(cls, ticker_name, span, interval):
+            path = cls.__get_path(ticker_name, span, interval)
+            with open(path) as json_file:
+                data = json.load(json_file)
+
+            return data
+
+        @classmethod
+        def write_file(cls, ticker_name, span, interval, data):
+            if not os.path.exists(os.path.abspath(&#39;__stock_cache__&#39;)):
+                os.makedirs(os.path.abspath(&#39;__stock_cache__&#39;))
+
+            path = cls.__get_path(ticker_name, span, interval)
+            with open(path, &#39;w+&#39;) as outfile:
+                json.dump(data, outfile)
+
+        @classmethod
+        def exists(cls, ticker_name, span, interval):
+            path = cls.__get_path(ticker_name, span, interval)
+            return os.path.exists(path)
+
+        @staticmethod
+        def clear():
+            if os.path.exists(os.path.abspath(&#39;__stock_cache__&#39;)):
+                dirpath = os.path.abspath(&#39;__stock_cache__/&#39;)
+                for path in os.listdir(dirpath):
+                    os.remove(os.path.abspath(&#39;__stock_cache__/&#39; + path))
+
+        @classmethod
+        def __get_path(cls, ticker_name, span, interval):
+            return os.path.abspath(&#39;__stock_cache__/&#39; + ticker_name + &#39;_&#39; + span + &#39;_&#39; + interval + &#39;.py&#39;)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="stock_wrapper.data.data.cache"><code class="name">var <span class="ident">cache</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="stock_wrapper.data.data.clear_cache"><code class="name flex">
+<span>def <span class="ident">clear_cache</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def clear_cache(cls):
+    cls.cache.clear()</code></pre>
+</details>
+</dd>
+<dt id="stock_wrapper.data.data.get_history"><code class="name flex">
+<span>def <span class="ident">get_history</span></span>(<span>tickers, span='day', interval='1m', calculate_averages=[''], averages_to_calculate=[10, 20], cache=False, extended=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes in a ticker object and returns a pandas dataframe containing price,
+:param tickers: Single Ticker object or list of Ticker objects
+:type tickers: str
+:param span: How much data to retrieve
+:type span: str, [day, week, month, 3month, year, max]
+:param interval: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+:type interval: str
+:param calculate_averages: Whether or not to calculate moving averages
+:type calculate_averages: bool
+:param cache: whether or not to retrieve/store in cache
+:type cache: bool
+:return: pandas dataframe</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_history(cls, tickers, span=&#39;day&#39;, interval=&#39;1m&#39;, calculate_averages=[&#39;&#39;], averages_to_calculate=[10, 20],  cache=False, extended=False):
+    &#34;&#34;&#34;Takes in a ticker object and returns a pandas dataframe containing price,
+    :param tickers: Single Ticker object or list of Ticker objects
+    :type tickers: str
+    :param span: How much data to retrieve
+    :type span: str, [day, week, month, 3month, year, max]
+    :param interval: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+    :type interval: str
+    :param calculate_averages: Whether or not to calculate moving averages
+    :type calculate_averages: bool
+    :param cache: whether or not to retrieve/store in cache
+    :type cache: bool
+    :return: pandas dataframe
+    &#34;&#34;&#34;
+
+    if not isinstance(tickers, list):
+        tickers = [tickers]
+
+    ticker_symbols = &#39;&#39;
+    for ticker in tickers:
+        if isinstance(ticker, stock_wrapper.Stock):
+            ticker_symbols += ticker.ticker + &#39; &#39;
+        else:
+            ticker_symbols += ticker + &#39; &#39;
+    ticker_symbols = ticker_symbols[:-1]
+
+    # downloaded history
+    history = yfinance.download(tickers=ticker_symbols, period=cls.__switcher[span], group_by=&#39;ticker&#39;, prepost=extended, interval=interval).reset_index()
+
+    ticker_symbols = ticker_symbols.split(&#34; &#34;)
+    if calculate_averages:
+        for symbol in ticker_symbols:
+            history[symbol, &#34;Average&#34;] = (history[symbol][&#39;High&#39;] + history[symbol][&#39;Low&#39;]) / 2
+
+            def __build_average(period):
+                name = (&#39;SMA_&#39; + str(period))
+                history[(symbol, name)] = history[symbol][&#39;Close&#39;].rolling(period).mean()
+
+            for average in averages_to_calculate:
+                if not isinstance(average, int):
+                    raise Exception(&#34;Averages are numbers of days and must be of type int&#34;)
+
+                __build_average(average)
+
+            # if history.columns.values[0] != &#39;Date&#39;:
+            #     headers = history.columns.values
+            #     headers[0] = &#39;Date&#39;
+            #     history.columns = headers
+
+    return history</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="stock_wrapper" href="index.html">stock_wrapper</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="stock_wrapper.data.data" href="#stock_wrapper.data.data">data</a></code></h4>
+<ul class="">
+<li><code><a title="stock_wrapper.data.data.cache" href="#stock_wrapper.data.data.cache">cache</a></code></li>
+<li><code><a title="stock_wrapper.data.data.clear_cache" href="#stock_wrapper.data.data.clear_cache">clear_cache</a></code></li>
+<li><code><a title="stock_wrapper.data.data.get_history" href="#stock_wrapper.data.data.get_history">get_history</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
+</footer>
+</body>
+</html>
