@@ -21,7 +21,7 @@ class data:
 
     @classmethod
     def get_history(cls, tickers, span='day', interval='1m', calculate_averages=[''], averages_to_calculate=[10, 20],  cache=False, extended=False):
-        """Takes in a ticker object and returns a pandas dataframe containing price,
+        """### Takes in a ticker object and returns a pandas dataframe containing price,
         :param tickers: Single Ticker object or list of Ticker objects
         :type tickers: str
         :param span: How much data to retrieve
@@ -32,7 +32,7 @@ class data:
         :type calculate_averages: bool
         :param cache: whether or not to retrieve/store in cache
         :type cache: bool
-        :return: pandas dataframe
+        :return: pandas dataframe   
         """
 
         if not isinstance(tickers, list):
