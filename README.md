@@ -1,3 +1,5 @@
+Due to the crackdown on public APIs, the data provided by this wrapper is no longer reliable. I apologize for the inconveninence.
+
 ## StockTracker
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 
